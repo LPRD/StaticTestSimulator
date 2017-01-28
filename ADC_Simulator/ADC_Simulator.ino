@@ -21,7 +21,6 @@ int ipow(int base, int ex) // Power function for integers
 }
 
 void setup() {
-  // put your setup code here, to run once:
   pinMode(DO, OUTPUT);
   pinMode(CS, INPUT);
   pinMode(SCK, INPUT);
@@ -30,13 +29,12 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly
-  for(int i = 0; i < 32; i++)
+  for(int i = 0; i < 32; i++) //initalizes storage for data to be streamed
   {
     streamdata[i] = 0;
   }
   int tempdata = analogRead(TempPin)/8;
-  for(int i = 6; i >= 0; i--)
+  for(int i = 6; i >= 0; i--) //converts analog temperature data into a binary number within the data to be streamed
   {
     if(tempdata%ipow(2,i+1) > 0 && ipow(2,i) <= tempdata)
     {
@@ -56,14 +54,15 @@ void loop() {
   Serial.println();
   */
   int i = 31;
-  while(digitalRead(CS) == LOW && i >= 0)
+  //this code bit here makes sense when you look in the library at how the software SPI behaves
+  while(digitalRead(CS) == LOW && i >= 0) //waits for slave select to be low
   {
     delay(1);
-    if(digitalRead(SCK) == LOW)
+    if(digitalRead(SCK) == LOW) //waits for clock to be low
     {
       digitalWrite(DO, streamdata[i]);
       i--;
-      delay(1);
+      delay(1); //these delays ensure the timing of the signals are in sync with the master
       
     }
   }
