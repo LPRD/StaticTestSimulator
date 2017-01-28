@@ -1,6 +1,6 @@
 #define DO 3
-#define CS 10
-#define SCK 11
+#define CS 4
+#define SCK 5
 #define TempPin A5
 
 int streamdata[32];
