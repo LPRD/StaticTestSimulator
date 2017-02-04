@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+//<<<<<<< HEAD
 #define SCK 2
 #define DO 3
 #define CS1 4
@@ -19,7 +19,7 @@ long loadcelldata;
 #define TempPin A5
 
 int streamdata[32];
->>>>>>> 25b6845af9be87b654f3cbfeef952574a9bbd394
+//>>>>>>> 25b6845af9be87b654f3cbfeef952574a9bbd394
 
 int ipow(int base, int ex) // Power function for integers
 {
@@ -37,7 +37,7 @@ int ipow(int base, int ex) // Power function for integers
 }
 
 void setup() {
-<<<<<<< HEAD
+//<<<<<<< HEAD
   // put your setup code here, to run once:
   pinMode(DO, OUTPUT);
   pinMode(LCDO, OUTPUT);
@@ -54,12 +54,12 @@ void setup() {
   pinMode(CS, INPUT);
   pinMode(SCK, INPUT);
   pinMode(TempPin, INPUT);
->>>>>>> 25b6845af9be87b654f3cbfeef952574a9bbd394
+//>>>>>>> 25b6845af9be87b654f3cbfeef952574a9bbd394
   Serial.begin(9600);
 }
 
 void loop() {
-<<<<<<< HEAD
+//<<<<<<< HEAD
   // put your main code here, to run repeatedly
   for(int i = 0; i < 32; i++)
   {
@@ -85,7 +85,7 @@ void loop() {
   }
 
   
-=======
+//=======
   for(int i = 0; i < 32; i++) //initalizes storage for data to be streamed
   {
     streamdata[i] = 0;
@@ -103,7 +103,7 @@ void loop() {
       streamdata[20+i] = 0;
     }
   }
->>>>>>> 25b6845af9be87b654f3cbfeef952574a9bbd394
+//>>>>>>> 25b6845af9be87b654f3cbfeef952574a9bbd394
   /*
   for(int i = 31; i >= 0; i--)
   {
@@ -112,7 +112,7 @@ void loop() {
   Serial.println();
   */
   int i = 31;
-<<<<<<< HEAD
+//<<<<<<< HEAD
   while(digitalRead(CS1) == LOW && i >= 0)
   {
     delay(1);
@@ -145,7 +145,7 @@ void loop() {
       digitalWrite(DO, streamdata[k][2]);
       k--;
       delay(1);
-=======
+//=======
   //this code bit here makes sense when you look in the library at how the software SPI behaves
   while(digitalRead(CS) == LOW && i >= 0) //waits for slave select to be low
   {
@@ -155,7 +155,7 @@ void loop() {
       digitalWrite(DO, streamdata[i]);
       i--;
       delay(1); //these delays ensure the timing of the signals are in sync with the master
->>>>>>> 25b6845af9be87b654f3cbfeef952574a9bbd394
+//>>>>>>> 25b6845af9be87b654f3cbfeef952574a9bbd394
       
     }
   }
