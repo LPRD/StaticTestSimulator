@@ -1,5 +1,6 @@
 #include <SPI.h>
 #include "Adafruit_MAX31855.h"
+#include "HX711.h"
 
 #define CLK 2
 #define MAXDO 3
@@ -11,9 +12,9 @@
 #define PERIOD 100
 #define calibration_factor 20400
 
-Adafruit_MAX31855 thermocouple_1(MAXCLK, MAXCS1, MAXDO);
-Adafruit_MAX31855 thermocouple_2(MAXCLK, MAXCS2, MAXDO);
-Adafruit_MAX31855 thermocouple_3(MAXCLK, MAXCS3, MAXDO);
+Adafruit_MAX31855 thermocouple_1(CLK, MAXCS1, MAXDO);
+Adafruit_MAX31855 thermocouple_2(CLK, MAXCS2, MAXDO);
+Adafruit_MAX31855 thermocouple_3(CLK, MAXCS3, MAXDO);
 
 HX711 loadcell(LCDO, CLK);
 
@@ -48,7 +49,7 @@ void loop()
     }
     else 
     {
-      double CTemp = getTemperature_1_Celsius();
+      /*double CTemp = getTemperature_1_Celsius();
       Serial.print("C_1= ");
       Serial.println(CTemp); 
       CTemp = getTemperature_2_Celsius();
@@ -56,9 +57,9 @@ void loop()
       Serial.println(CTemp); 
       CTemp = getTemperature_3_Celsius();
       Serial.print("C_3= ");
-      Serial.println(CTemp); 
-      Serial.print("Force= ")
-      Serial.println(loadcell.get_units(),1)
+      Serial.println(CTemp);*/ 
+      Serial.print("Force= ");
+      Serial.println(loadcell.get_units(),1);
       //Serial.print ("F = ");
       //Serial.println (CTemp * 1.8 + 32);    
     }
