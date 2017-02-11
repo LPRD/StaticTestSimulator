@@ -4,13 +4,16 @@
 #define CS2 5
 #define CS3 6
 #define LCDO 8
+#define LCOM 9
 #define LoadcellPin A0
 #define TempPin1 A1
 #define TempPin2 A2
 #define TempPin3 A3
 
 int streamdata[32][3];
+long loadcelldataInit = 1000000;
 long loadcelldata;
+int counter = 0;
 
 int ipow(int base, int ex) // Power function for integers
 {
@@ -27,23 +30,8 @@ int ipow(int base, int ex) // Power function for integers
     return base;
 }
 
-void setup() {
-  // put your setup code here, to run once:
-  pinMode(DO, OUTPUT);
-  pinMode(LCDO, OUTPUT);
-  pinMode(CS1, INPUT);
-  pinMode(CS2, INPUT);
-  pinMode(CS3, INPUT);
-  pinMode(SCK, INPUT);
-  pinMode(LoadcellPin, INPUT);
-  pinMode(TempPin1, INPUT);
-  pinMode(TempPin2, INPUT);
-  pinMode(TempPin3, INPUT);
-  Serial.begin(9600);
-}
-
-void loop() {
-  // put your main code here, to run repeatedly
+void gettempdata()
+{
   for(int i = 0; i < 32; i++)
   {
     streamdata[i][0] = 0;
@@ -66,13 +54,10 @@ void loop() {
         }
       }
   }
-  /*
-  for(int i = 31; i >= 0; i--)
-  {
-    Serial.print(streamdata[i]);
-  }
-  Serial.println();
-  */
+}
+
+void sendtempdata()
+{
   int i = 31;
   while(digitalRead(CS1) == LOW && i >= 0)
   {
@@ -84,6 +69,7 @@ void loop() {
       delay(1);
     }
   }
+  
   int j = 31;
   while(digitalRead(CS2) == LOW && j >= 0)
   {
@@ -95,6 +81,7 @@ void loop() {
       delay(1);
     }
   }
+  
   int k = 31;
   while(digitalRead(CS3) == LOW && k >= 0)
   {
@@ -106,6 +93,74 @@ void loop() {
       delay(1);
     }
   }
+}
+
+void loadcellInit()
+{
+  digitalWrite(LCDO, HIGH);
+  delay(100);
+  digitalWrite(LCDO, LOW);
+  shiftOut(LCDO, SCK, MSBFIRST, (loadcelldataInit >> 16));
+  shiftOut(LCDO, SCK, MSBFIRST, (loadcelldataInit >> 8));
+  shiftOut(LCDO, SCK, MSBFIRST, loadcelldataInit);
+}
+
+void sendLoadcellData(long data)
+{
+    if(LCOM)
+    {
+      delay(1);
+      digitalWrite(LCDO, LOW);
+      shiftOut(LCDO, SCK, MSBFIRST, (data >> 16));
+      shiftOut(LCDO, SCK, MSBFIRST, (data >> 8));
+      shiftOut(LCDO, SCK, MSBFIRST, data);
+    }
+    else
+    {
+      digitalWrite(LCDO, HIGH);
+    }
+}
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(DO, OUTPUT);
+  pinMode(LCDO, OUTPUT);
+  pinMode(CS1, INPUT);
+  pinMode(CS2, INPUT);
+  pinMode(CS3, INPUT);
+  pinMode(SCK, INPUT);
+  pinMode(LoadcellPin, INPUT);
+  pinMode(TempPin1, INPUT);
+  pinMode(TempPin2, INPUT);
+  pinMode(TempPin3, INPUT);
+  Serial.begin(9600);
+
+
+}
+
+void loop() {
+
+  gettempdata();
+  /*
+  for(int i = 31; i >= 0; i--)
+  {
+    Serial.print(streamdata[i]);
+  }
+  Serial.println();
+  */
+  sendtempdata();
+
+  if(counter < 20)
+  {
+    loadcellInit();
+    counter++;
+  }
+  
+  long loadcelldata = analogRead(LoadcellPin) * 2000000/1023 + 1000000;
+
+  sendLoadcellData(loadcelldata);
+  
+  
   //delay(250);
   //Serial.println();
   //Serial.println("New Data");

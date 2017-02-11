@@ -8,6 +8,7 @@
 #define MAXCS2 5
 #define MAXCS3 6
 #define LCDO 8
+#define LCOM 9
 #define PRESSURE_PIN 10 
 #define PERIOD 100
 #define calibration_factor 20400
@@ -27,11 +28,12 @@ void setup()
   Serial.begin(9600);
   pinMode(PRESSURE_PIN, INPUT);
   pinMode(LCDO, INPUT);
+  pinMode(LCOM, OUTPUT);
 
   loadcell.set_scale(calibration_factor); //This value is obtained by using the SparkFun_HX711_Calibration sketch
   loadcell.tare();  //Assuming there is no weight on the scale at start up, reset the scale to 0
   
-  delay (500); // wait for MAX chip to stabilize 
+  //delay (500); // wait for MAX chip to stabilize 
 }
 
 void loop() 
@@ -49,7 +51,7 @@ void loop()
     }
     else 
     {
-      /*double CTemp = getTemperature_1_Celsius();
+      double CTemp = getTemperature_1_Celsius();
       Serial.print("C_1= ");
       Serial.println(CTemp); 
       CTemp = getTemperature_2_Celsius();
@@ -57,9 +59,11 @@ void loop()
       Serial.println(CTemp); 
       CTemp = getTemperature_3_Celsius();
       Serial.print("C_3= ");
-      Serial.println(CTemp);*/ 
+      Serial.println(CTemp);
       Serial.print("Force= ");
+      digitalWrite(LCOM, HIGH);
       Serial.println(loadcell.get_units(),1);
+      digitalWrite(LCOM, LOW);
       //Serial.print ("F = ");
       //Serial.println (CTemp * 1.8 + 32);    
     }
