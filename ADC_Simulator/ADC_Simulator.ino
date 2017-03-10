@@ -156,7 +156,7 @@ void loop() {
     counter++;
   }
   
-  long loadcelldata = analogRead(LoadcellPin) * 2000000/1023 + 1000000;
+  long loadcelldata = analogRead(LoadcellPin) * 1000000/1023 + 1000000;
 
   sendLoadcellData(loadcelldata);
   

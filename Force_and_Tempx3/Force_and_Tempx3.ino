@@ -52,14 +52,14 @@ void loop()
     else 
     {
       double CTemp = getTemperature_1_Celsius();
-      Serial.print("C_1= ");
-      Serial.println(CTemp); 
+      //Serial.print("C_1= ");
+      //Serial.println(CTemp); 
       CTemp = getTemperature_2_Celsius();
-      Serial.print("C_2= ");
-      Serial.println(CTemp); 
+      //Serial.print("C_2= ");
+      //Serial.println(CTemp); 
       CTemp = getTemperature_3_Celsius();
-      Serial.print("C_3= ");
-      Serial.println(CTemp);
+      //Serial.print("C_3= ");
+      //Serial.println(CTemp);
       Serial.print("Force= ");
       digitalWrite(LCOM, HIGH);
       Serial.println(loadcell.get_units(),1);
