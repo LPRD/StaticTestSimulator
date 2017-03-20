@@ -5,13 +5,16 @@
 #define CS3 6
 #define LCDO 8
 #define LCOM 9
-#define LoadcellPin A0
+#define PressureOutput 7
+
+//#define LoadcellPin A0
 #define TempPin1 A1
 #define TempPin2 A2
 #define TempPin3 A3
+#define PressurePin A0
 
 int streamdata[32][3];
-long loadcelldataInit = 1000000;
+long loadcelldataInit = 100000;
 long loadcelldata;
 int counter = 0;
 
@@ -95,7 +98,7 @@ void sendtempdata()
   }
 }
 
-void loadcellInit()
+/*void loadcellInit()
 {
   digitalWrite(LCDO, HIGH);
   delay(100);
@@ -119,20 +122,22 @@ void sendLoadcellData(long data)
     {
       digitalWrite(LCDO, HIGH);
     }
-}
+}*/
 
 void setup() {
   // put your setup code here, to run once:
   pinMode(DO, OUTPUT);
   pinMode(LCDO, OUTPUT);
+  pinMode(PressureOutput, OUTPUT);
   pinMode(CS1, INPUT);
   pinMode(CS2, INPUT);
   pinMode(CS3, INPUT);
   pinMode(SCK, INPUT);
-  pinMode(LoadcellPin, INPUT);
+  //pinMode(LoadcellPin, INPUT);
   pinMode(TempPin1, INPUT);
   pinMode(TempPin2, INPUT);
   pinMode(TempPin3, INPUT);
+  pinMode(PressurePin, INPUT);
   Serial.begin(9600);
 
 
@@ -150,15 +155,17 @@ void loop() {
   */
   sendtempdata();
 
+  analogWrite(PressureOutput, analogRead(PressurePin)/4);
+  /*
   if(counter < 20)
   {
     loadcellInit();
     counter++;
-  }
+  }*/
   
-  long loadcelldata = analogRead(LoadcellPin) * 1000000/1023 + 1000000;
+  //long loadcelldata = analogRead(LoadcellPin) * 1000000/1023 + 1000000;
 
-  sendLoadcellData(loadcelldata);
+  //sendLoadcellData(loadcelldata);
   
   
   //delay(250);

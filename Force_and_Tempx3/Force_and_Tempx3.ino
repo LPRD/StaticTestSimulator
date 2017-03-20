@@ -9,7 +9,7 @@
 #define MAXCS3 6
 #define LCDO 8
 #define LCOM 9
-#define PRESSURE_PIN 10 
+#define PRESSURE_PIN A0
 #define PERIOD 100
 #define calibration_factor 20400
 
@@ -41,10 +41,9 @@ void loop()
   if (millis () > last_run_time + PERIOD) 
   {
     last_run_time = millis ();
-    /*Serial.print ("PSIG = ");
+    Serial.print ("PSIG = ");
     Serial.println (getPressure(analogRead(PRESSURE_PIN)));
     //error message
-    */
     if (isnan(getTemperature_1_Celsius()) || isnan(getTemperature_2_Celsius()) || isnan(getTemperature_3_Celsius()))
     {
       Serial.println ("Something wrong with thermocouple !");
@@ -52,18 +51,18 @@ void loop()
     else 
     {
       double CTemp = getTemperature_1_Celsius();
-      //Serial.print("C_1= ");
-      //Serial.println(CTemp); 
+      Serial.print("C_1= ");
+      Serial.println(CTemp); 
       CTemp = getTemperature_2_Celsius();
-      //Serial.print("C_2= ");
-      //Serial.println(CTemp); 
+      Serial.print("C_2= ");
+      Serial.println(CTemp); 
       CTemp = getTemperature_3_Celsius();
-      //Serial.print("C_3= ");
-      //Serial.println(CTemp);
-      Serial.print("Force= ");
-      digitalWrite(LCOM, HIGH);
-      Serial.println(loadcell.get_units(),1);
-      digitalWrite(LCOM, LOW);
+      Serial.print("C_3= ");
+      Serial.println(CTemp);
+      //Serial.print("Force= ");
+      //digitalWrite(LCOM, HIGH);
+      //Serial.println(loadcell.get_units(),1);
+      //digitalWrite(LCOM, LOW);
       //Serial.print ("F = ");
       //Serial.println (CTemp * 1.8 + 32);    
     }
@@ -72,7 +71,7 @@ void loop()
 
 double getPressure (double reading) 
 {
-  double PSIG = getVDC(reading) * 246.58 - 118.33;
+  double PSIG = getVDC(reading) * 246.58;// - 118.33;
   return PSIG;
 }
 
